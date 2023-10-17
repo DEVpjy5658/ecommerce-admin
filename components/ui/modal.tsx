@@ -37,9 +37,10 @@ export const Modal: React.FC<ModalProps> = ({
                     {description}
                    </DialogDescription> 
                 </DialogHeader>
+                <div>
+                    {children}
+                </div>
             </DialogContent>
         </Dialog>
-
-        /*51:31*/
     );
 };
