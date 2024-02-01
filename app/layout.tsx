@@ -11,7 +11,7 @@ import type { Metadata } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Admin Dashboard',
   description: 'Admin Dashboard',
 }
