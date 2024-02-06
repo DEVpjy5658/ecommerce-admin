@@ -6,6 +6,7 @@ import { Store } from "@prisma/client"
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams, useRouter } from "next/navigation";
 
 import { Heading } from "@/components/ui/heading";
 import { Button }   from "@/components/ui/button";
@@ -14,9 +15,12 @@ import { Form,
          FormControl,
          FormField,
          FormItem,
-         FormLabel
+         FormLabel,
+         FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 
 
@@ -33,6 +37,9 @@ type SettingsFormValues = z.infer<typeof formSchema>;
 export const SettingsForm: React.FC<SettingsFormProps> = ({
     initialData
 }) => {
+    const params = useParams();
+    const router = useRouter();
+    
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -43,7 +50,16 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
     });
 
     const onSubmit = async (data: SettingsFormValues) => {
-        console.log(data);
+        try {
+          setLoading(true);
+          await axios.patch(`/api/stores/${params.storeId}`, data)
+          router.refresh();
+        } catch (error) {
+          toast.error("Something went wrong.");
+        }
+        finally {
+          setLoading(false);
+        }
     };
 
     return (
@@ -54,9 +70,10 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
               description="Manage store preferences" 
             />
             <Button
+              disabled={loading}
               variant="destructive"
-              size="sm"
-              onClick={() => {}}
+              size="icon"
+              onClick={() => setOpen(true)}
               >
                 <Trash className="h-4 w-5" />
               </Button>
@@ -73,11 +90,15 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
                        <FormLabel>Name</FormLabel>
                         <FormControl>
                             <Input disabled={loading} placeholder="Store name" {...field} />
-                        </FormControl>   
+                        </FormControl>
+                        <FormMessage />   
                       </FormItem>              
                       )}
                     />
                 </div>
+                <Button disabled={loading} className="ml-auto" type="submit">
+                  Save changes
+                </Button>
             </form>
 
         </Form>
