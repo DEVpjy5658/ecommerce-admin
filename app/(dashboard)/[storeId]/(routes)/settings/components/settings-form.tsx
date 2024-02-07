@@ -21,6 +21,7 @@ import { Form,
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AlertModal } from "@/components/modals/alert-modal";
 
 
 
@@ -62,8 +63,31 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({
         }
     };
 
+    const onDelete = async () => {
+      try {
+        setLoading(true)
+        await axios.delete(`/api/stores/${params.storeId}`)
+        router.refresh();
+        router.push("/")
+        toast.success("Store deleted.");
+      } catch (error) {
+        toast.error("Make sure you remove all products and categories first")
+      } finally {
+        setLoading(false)
+        setOpen(false)
+      }
+    }
+
+
+
     return (
       <>
+        <AlertModal 
+          isOpen={open}
+          onClose = {() => setOpen(false)}
+          onConfirm = {onDelete}
+          loading = {loading}
+          />
         <div className="flex items-center justify-between">
             <Heading 
               title="Settings"
