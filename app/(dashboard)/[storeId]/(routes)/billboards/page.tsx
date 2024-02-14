@@ -7,7 +7,7 @@ const BillboardPage = () => {
                 <BillboardClient />
             </div>
         </div>
-    )
+    );
 }
 
 export default BillboardPage;
