@@ -34,5 +34,3 @@ export async function POST(
         return new NextResponse("Internal error", { status: 500 });
     }
 }
-
-/**1:34:34 */
