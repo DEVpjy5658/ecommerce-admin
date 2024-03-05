@@ -1,10 +1,12 @@
 "use client"
 
 import * as z from "zod";
+import axios from "axios";
 import { useState } from "react";
 import { Billboard } from "@prisma/client"
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 
@@ -20,8 +22,6 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 
@@ -85,7 +85,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
       setLoading(true)
       await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`)
       router.refresh();
-      router.push("/")
+      router.push(`/${params.storeId}/billboards`)
       toast.success("Billboard deleted.");
     } catch (error) {
       toast.error("Make sure you remove all categories using this billboard first")
