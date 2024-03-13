@@ -32,3 +32,9 @@ model Billboard {
 
   @@index([storeId])
   }
+
+  model Category {
+    id String @id default(uuid())
+    storeId string
+    store Store @relation("StroeToCategory", fields: [[storeId]])
+  }

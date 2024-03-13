@@ -48,7 +48,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const title = initialData ? "Edit billboard" : "Create billboard";
   const description = initialData ? "Edit a billboard" : "Add a new billboard";
   const toastMessage = initialData ? "Billboard updated" : "Billboard created";
-  const action = initialData ? "Save change" : "Create";
+  const action = initialData ? "Save changes" : "Create";
 
 
   const form = useForm<BillboardFormValues>({
@@ -63,19 +63,17 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/billboards/$${params.BillboardId}`, data)
+        await axios.patch(`/api/${params.storeId}/billboards/$${params.billboardId}`, data)
       }
       else {
         await axios.post(`/api/${params.storeId}/billboards`, data)
-
       }
       router.refresh();
       router.push(`/${params.storeId}/billboards`)
       toast.success(toastMessage);
     } catch (error) {
       toast.error("Something went wrong.");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -163,7 +161,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   );
 };
